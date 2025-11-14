@@ -1,66 +1,34 @@
-# Usar imagen oficial de PHP 8.2 con extensiones
-FROM php:8.3-cli
+FROM php:8.2-apache
 
-# Instalar dependencias del sistema y extensiones PHP
+# Instalar dependencias del sistema
 RUN apt-get update && apt-get install -y \
-    git \
-    curl \
-    libpng-dev \
-    libonig-dev \
-    libxml2-dev \
-    libzip-dev \
     libicu-dev \
-    zip \
+    libzip-dev \
     unzip \
-    nodejs \
-    npm \
-    && docker-php-ext-configure intl \
-    && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip intl
+    git \
+    libonig-dev \
+    libxml2-dev
+
+# Extensiones necesarias para Laravel + Filament
+RUN docker-php-ext-install intl pdo pdo_mysql zip
+
+# Activar mod_rewrite
+RUN a2enmod rewrite
+
+# Copiar proyecto
+COPY . /var/www/html
 
 # Instalar Composer
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-# Establecer directorio de trabajo
-WORKDIR /app
+# Instalar dependencias del proyecto
+RUN composer install --no-interaction --prefer-dist --optimize-autoloader
 
-# Copiar archivos de dependencias primero (para cache)
-COPY composer.json composer.lock ./
+# Permisos
+RUN chown -R www-data:www-data /var/www/html
 
-# Copiar archivos necesarios para Composer scripts
-COPY artisan ./
-COPY bootstrap ./bootstrap
-COPY config ./config
-COPY database ./database
-COPY routes ./routes
-COPY app ./app
+WORKDIR /var/www/html
 
-# Crear estructura de directorios de storage necesaria para Laravel
-RUN mkdir -p storage/framework/cache/data \
-    && mkdir -p storage/framework/sessions \
-    && mkdir -p storage/framework/views \
-    && mkdir -p storage/logs \
-    && mkdir -p bootstrap/cache
+EXPOSE 80
 
-# Instalar dependencias PHP
-RUN composer install --optimize-autoloader --no-dev --no-interaction --ignore-platform-reqs
-
-# Copiar package files
-COPY package*.json ./
-
-# Instalar dependencias Node
-RUN npm ci --legacy-peer-deps
-
-# Copiar el resto de la aplicación
-COPY . .
-
-# Compilar assets
-RUN npm run build
-
-# Dar permisos a storage y bootstrap/cache
-RUN chmod -R 775 storage bootstrap/cache
-
-# Exponer puerto
-EXPOSE 8080
-
-# Comando de inicio
-CMD bash railway-deploy.sh && php artisan serve --host=0.0.0.0 --port=$PORT
+CMD ["apache2-foreground"]
