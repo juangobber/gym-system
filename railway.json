@@ -1,13 +1,11 @@
 {
   "$schema": "https://railway.app/railway.schema.json",
-  "build": {
-    "builder": "docker",
-    "dockerfile": "Dockerfile"
-  },
+
   "deploy": {
     "restartPolicyType": "ON_FAILURE",
     "restartPolicyMaxRetries": 3
   },
+
   "variables": {
     "APP_ENV": "production",
     "APP_DEBUG": "false",
@@ -16,7 +14,7 @@
 
     "DB_CONNECTION": "sqlite",
     "DB_DATABASE": "/data/database.sqlite",
-    
+
     "CACHE_STORE": "file",
     "SESSION_DRIVER": "file",
     "QUEUE_CONNECTION": "sync",
@@ -24,12 +22,14 @@
     "LOG_LEVEL": "info",
     "LOG_CHANNEL": "stack"
   },
+
   "volumes": [
     {
       "name": "laravel-data",
       "mountPath": "/data"
     }
   ],
+
   "scripts": {
     "postBuild": [
       "mkdir -p /data",
