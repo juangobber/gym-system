@@ -9,8 +9,19 @@ class RolesTableSeeder extends Seeder
 {
     public function run(): void
     {
-        Role::create(['name' => 'admin', 'description' => 'Administrador del sistema']);
-        Role::create(['name' => 'teacher', 'description' => 'Entrenador o profesor']);
-        Role::create(['name' => 'student', 'description' => 'Alumno o socio']);
+        Role::updateOrCreate(
+            ['name' => 'admin'],
+            ['description' => 'Administrador del sistema']
+        );
+
+        Role::updateOrCreate(
+            ['name' => 'teacher'],
+            ['description' => 'Entrenador o profesor']
+        );
+
+        Role::updateOrCreate(
+            ['name' => 'student'],
+            ['description' => 'Alumno o socio']
+        );
     }
 }
