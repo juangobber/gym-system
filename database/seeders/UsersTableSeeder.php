@@ -3,24 +3,32 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use App\Models\Role;
 
 class UsersTableSeeder extends Seeder
 {
     public function run(): void
     {
-        // Admin
-        User::create([
-            'name' => 'Administrador',
-            'email' => 'admin@admin.com',
-            'password' => bcrypt('admin'),
-            'dni' => '40123123',
-            'role_id' => 1, // admin
-            'phone' => '1122334455',
-            'active' => true,
-        ]);
+        $adminRole = Role::firstWhere('name', 'admin');
+        $teacherRole = Role::firstWhere('name', 'teacher');
+        $studentRole = Role::firstWhere('name', 'student');
 
-        // Teachers
+        if ($adminRole) {
+            User::updateOrCreate(
+                ['email' => 'admin@admin.com'],
+                [
+                    'name' => 'Administrador',
+                    'password' => Hash::make('admin'),
+                    'dni' => '40123123',
+                    'role_id' => $adminRole->id,
+                    'phone' => '1122334455',
+                    'active' => true,
+                ]
+            );
+        }
+
         $teachers = [
             ['Pedro Giménez', 'pedro@forza.com', '40111111', '2211111111'],
             ['Laura Torres', 'laura@forza.com', '40222222', '2212222222'],
@@ -28,18 +36,21 @@ class UsersTableSeeder extends Seeder
         ];
 
         foreach ($teachers as $t) {
-            User::create([
-                'name' => $t[0],
-                'email' => $t[1],
-                'password' => bcrypt('teacher'),
-                'dni' => $t[2],
-                'role_id' => 2, // teacher
-                'phone' => $t[3],
-                'active' => true,
-            ]);
+            if ($teacherRole) {
+                User::updateOrCreate(
+                    ['email' => $t[1]],
+                    [
+                        'name' => $t[0],
+                        'password' => Hash::make('teacher'),
+                        'dni' => $t[2],
+                        'role_id' => $teacherRole->id,
+                        'phone' => $t[3],
+                        'active' => true,
+                    ]
+                );
+            }
         }
 
-        // Students
         $students = [
             ['Sofía Martínez', 'sofia@forza.com', '40444444', '2214444444'],
             ['Juan Pérez', 'juan@forza.com', '40555555', '2215555555'],
@@ -47,15 +58,19 @@ class UsersTableSeeder extends Seeder
         ];
 
         foreach ($students as $s) {
-            User::create([
-                'name' => $s[0],
-                'email' => $s[1],
-                'password' => bcrypt('student'),
-                'dni' => $s[2],
-                'role_id' => 3, // student
-                'phone' => $s[3],
-                'active' => true,
-            ]);
+            if ($studentRole) {
+                User::updateOrCreate(
+                    ['email' => $s[1]],
+                    [
+                        'name' => $s[0],
+                        'password' => Hash::make('student'),
+                        'dni' => $s[2],
+                        'role_id' => $studentRole->id,
+                        'phone' => $s[3],
+                        'active' => true,
+                    ]
+                );
+            }
         }
     }
 }
