@@ -1,4 +1,4 @@
-FROM php:8.2-apache
+FROM php:8.3-apache
 
 # Instalar dependencias del sistema
 RUN apt-get update && apt-get install -y \
@@ -9,7 +9,7 @@ RUN apt-get update && apt-get install -y \
     libonig-dev \
     libxml2-dev
 
-# Extensiones necesarias para Laravel + Filament
+# Extensiones necesarias para Laravel + Filament + Openspout
 RUN docker-php-ext-install intl pdo pdo_mysql zip
 
 # Activar mod_rewrite
@@ -22,7 +22,7 @@ COPY . /var/www/html
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 # Instalar dependencias del proyecto
-RUN composer install --no-interaction --prefer-dist --optimize-autoloader
+RUN composer install --no-interaction --prefer-dist --optimize-autoloader --ignore-platform-reqs
 
 # Permisos
 RUN chown -R www-data:www-data /var/www/html
@@ -32,3 +32,4 @@ WORKDIR /var/www/html
 EXPOSE 80
 
 CMD ["apache2-foreground"]
+
