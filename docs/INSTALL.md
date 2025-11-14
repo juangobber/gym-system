@@ -76,120 +76,103 @@ pwd
 ```
 
 
-## 📌 2. Configurar Variables de Entorno
+## 📌 2. Iniciar proyecto para desarrollo local
 
-Copiar el archivo:
+Copiar `.env.example` a `.env`:
 
 ``` bash
 cp .env.example .env
 ```
 
-Editar el `.env`:
+Instalar dependencias base:
 
-    APP_NAME="Forza Gym"
-    APP_ENV=local
-    APP_KEY=
-    APP_DEBUG=true
-    APP_URL=http://127.0.0.1:8000
-
-    DB_CONNECTION=mysql
-    DB_HOST=mysql
-    DB_PORT=3306
-    DB_DATABASE=forza_gym
-    DB_USERNAME=sail
-    DB_PASSWORD=password
-
-La APP_KEY se generará más adelante.
-
-
-## 📌 3. Instalar Dependencias (Composer)
-
-
-    docker run --rm \
+``` bash
+docker run --rm \
     -u "$(id -u):$(id -g)" \
-    -v "$(pwd):/var/www/html" \
+    -v "$(pwd)":/var/www/html \
     -w /var/www/html \
-    laravelsail/php84-composer:latest \
+    laravelsail/php82-composer:latest \
     composer install --ignore-platform-reqs
-
-
-Debería crearse la carpeta **vendor/**.
-
-
-## 📌 4. Levantar Contenedores con Sail
-
-``` bash
-./vendor/bin/sail up -d
 ```
 
-
-## 📌 5. Generar APP_KEY
-
-``` bash
-./vendor/bin/sail artisan key:generate
-```
-
-## 📌 6. Migraciones y Seeders
-
-``` bash
-./vendor/bin/sail artisan migrate:fresh --seed
-```
-
-✔️ Datos creados por seeders:\
-- Roles\
-- Permisos\
-- Usuario administrador
-
-**👤 Usuario Administrador**\
-Email: `admin@admin.com`\
-Contraseña: `admin`
-
-
-## 📌 7. Instalar Dependencias Frontend
-
-``` bash
-./vendor/bin/sail npm install
-```
-
-
-## 📌 8. Ejecutar Frontend
-
-### 🔧 Modo desarrollo (recomendado)
-
-``` bash
-./vendor/bin/sail npm run dev
-```
-
-### 📦 Compilación (producción)
-
-``` bash
-./vendor/bin/sail npm run build
-```
-
-
-## 📌 9. Acceder al Sistema
-
-Abrí tu navegador:
-
-Aplicación:\
-http://localhost
-
-Panel de administración (Filament):\
-http://localhost/admin
-
-Ingresá con las credenciales del administrador creadas por los seeders.
-
-
-## 📌 10. (Opcional) Crear Alias para Sail
+Crear alias para Sail:
 
 ``` bash
 echo "alias sail='./vendor/bin/sail'" >> ~/.bashrc
 source ~/.bashrc
 ```
 
-Ahora podés usar:
+Iniciar el servidor local:
 
-    sail up -d
-    sail artisan migrate
-    sail npm run dev
+``` bash
+sail up
+```
 
+Ejecutar Sail en segundo plano:
+
+``` bash
+sail up -d
+```
+
+Detener contenedores:
+
+``` bash
+sail down
+```
+
+Generar la APP_KEY:
+
+``` bash
+sail artisan key:generate
+```
+
+Ejecutar migraciones:
+
+``` bash
+sail artisan migrate
+```
+
+Instalar librerías de frontend:
+
+``` bash
+sail npm i
+```
+
+Compilar frontend para producción:
+
+``` bash
+sail npm run build
+```
+
+Servidor de desarrollo (Vite):
+
+``` bash
+sail npm run dev
+```
+
+Actualizar cambios del repositorio:
+
+``` bash
+git pull
+sail composer install   # si cambiaron dependencias PHP
+sail artisan migrate    # si hay nuevas migraciones
+sail npm i              # si cambiaron dependencias JS
+```
+
+Pruebas manuales:
+
+Abrir en el navegador `http://localhost`
+
+Panel de administración (backoffice): `http://localhost/admin`
+
+Crear usuario administrador:
+
+``` bash
+sail artisan make:filament-user
+```
+
+Ejecutar tests:
+
+``` bash
+sail test
+```
