@@ -1,35 +1,147 @@
-# ForzaGym Admin Panel
+# Sistema de Gestión Forza Gym
 
-## Propósito y alcance
-ForzaGym es un panel administrativo desarrollado con Laravel + Filament para gestionar un gimnasio. Permite a administradores y profesores crear actividades, turnos y rutinas; registrar pagos; administrar alumnos y docentes; y ofrecer a los alumnos un portal de autogestión (perfil, rutinas asignadas y turnos disponibles).
+Gestión integral de alumnos, turnos, pagos y rutinas — desarrollado con Laravel, Filament y Laravel Sail
 
-## Cómo ejecutar localmente
-1. Clonar el repositorio.
-2. Seguir los pasos detallados en [`docs/INSTALL.md`](docs/INSTALL.md) (Docker + Sail).
-3. Crear un usuario de Filament (`sail artisan make:filament-user`) y acceder a `http://localhost/admin`.
+## 🏋️‍♂️ Propósito y Alcance del Sistema
 
-### Demo / credenciales
-No hay demo pública; usar el entorno local y el usuario creado en el paso 3.
+El Sistema de Gestión Forza Gym es una plataforma web diseñada para centralizar y digitalizar los procesos administrativos del gimnasio Forza Entrenamientos.
+Su objetivo principal es brindar mayor eficiencia, control y accesibilidad tanto al dueño como a los profesores y alumnos.
 
-## Dependencias y variables de entorno
-- Docker + Docker Compose (Sail)
-- PHP 8.2, Composer
-- Node.js 18, npm
-- MySQL 8
-- Variables principales: `APP_URL`, `APP_PORT`, `DB_*` (ver `.env.example` y la guía de instalación).
+## ✔ Funcionalidades incluidas
 
-## Estado del pipeline
-![Deploy](https://github.com/your-org/gestion-gym/actions/workflows/deploy.yml/badge.svg)
+- ABM de alumnos
+- ABM de turnos y horarios
+- Asignación de turnos por parte de los profesores
+- Gestión y control de pagos
+- Login de usuarios
+- Visualización de turnos y estado de pagos por los alumnos
+- Carga de datos personales y apto médico
+- Asignación de rutinas por profesores
 
-## Documentación relacionada
-- 📄 [SRS IEEE](docs/srs-gestion-gym.md)
-- 🔌 [Documentación de API](docs/API_documentation.md)
-- ⚙️ [Guía de instalación](docs/INSTALL.md)
+## ❌ Exclusiones
 
-## Aprendizajes y conclusiones
-- **Lo que intentamos:** modelar los procesos cotidianos del gimnasio (creación de turnos, rutinas y pagos) sobre Filament y Laravel Sail.
-- **Lo que salió bien:** la separación de roles (admin, teacher, student) y la automatización del enrolamiento en turnos + pagos.
-- **Lo que falta / próximos pasos:** acabar una API pública, mejorar los reportes financieros y automatizar notificaciones (pagos vencidos).
+- No incluye pasarela de pago online
+- No incluye app móvil nativa (solo web responsive)
+- No hay integración con sistemas contables externos
 
----
-> Para más detalles sobre requisitos funcionales, API y despliegue consultá la carpeta `docs/` y el workflow `.github/workflows/deploy.yml`.
+## 📌 Supuestos
+
+- Los alumnos mantienen día y horario fijo
+- Los profesores gestionan los turnos
+- Todos los usuarios tienen acceso a internet
+
+## 🔒 Restricciones
+
+- Sistema disponible vía web
+- Se prioriza usabilidad por sobre funcionalidades complejas
+- Desarrollo en tiempo acotado
+
+## 🖥️ Cómo ejecutar localmente
+
+Para instrucciones detalladas, ver `/docs/INSTALL.md`
+
+### Requisitos
+
+- Docker
+- Laravel Sail
+
+### Pasos básicos
+
+```bash
+cp .env.example .env
+
+docker run --rm \
+    -u "$(id -u):$(id -g)" \
+    -v "$(pwd)":/var/www/html \
+    -w /var/www/html \
+    laravelsail/php82-composer:latest \
+    composer install --ignore-platform-reqs
+
+alias sail='./vendor/bin/sail'
+sail up
+sail artisan key:generate
+sail artisan migrate
+
+sail npm i
+sail npm run build # o npm run dev para live reload
+```
+
+### Acceso
+
+- Frontend: http://localhost
+- Admin (Filament): http://localhost/admin
+
+## 🌐 Demo en producción
+
+El sistema está deployado en Railway:
+
+🔗 [http://gym-system-production-c3dc.up.railway.app/admin]
+
+## 🔧 Dependencias y Variables de Entorno
+
+El sistema utiliza:
+
+- PHP 8.x (via Sail)
+- Laravel 10+
+- Filament
+- MySQL (contenedor Sail)
+
+### Variables de entorno relevantes
+
+```
+DB_CONNECTION=mysql
+DB_HOST=mysql
+DB_PORT=3306
+DB_DATABASE=forza_gym
+DB_USERNAME=sail
+DB_PASSWORD=password
+```
+
+## 🚀 Estado del pipeline / Deploy
+
+El proyecto se deploya automáticamente desde la rama main del repositorio mediante Railway Auto-Deploy.
+No se utiliza CI/CD adicional ni badges de GitHub Actions.
+
+## 📄 Documentación
+
+### ✔ Documento SRS
+
+El documento de especificación de requisitos se encuentra aquí:
+
+📌 `/docs/srs-gestion-gym.md`
+
+### ✔ Documentación de API
+
+El sistema no expone API pública.
+Filament gestiona internamente los endpoints utilizados por el panel administrativo.
+
+## 🧠 Aprendizajes y Conclusiones
+
+Durante el desarrollo de Sistema de Gestión Forza Gym se lograron aprendizajes clave:
+
+### ⭐ Lo que intentamos
+
+- Construir un sistema completo de gestión de gimnasio utilizando Laravel y Filament.
+- Implementar un flujo administrativo real: alumnos → turnos → pagos → rutinas.
+
+### ⭐ Lo que salió bien
+
+- Filament permitió acelerar el desarrollo del backoffice.
+- Sail facilitó el entorno de desarrollo unificado en Docker.
+- Se logró un diseño modular y limpio de los modelos, migraciones y recursos.
+
+### ⭐ Dificultades encontradas
+
+- Manejo de relaciones complejas entre alumnos, turnos y pagos.
+- Integración inicial con Sail y problemas comunes de permisos/migraciones.
+
+### ⭐ Qué falta / Próximos pasos
+
+- Posible incorporación de una API para app móvil.
+- Agregar pasarela de pago online.
+- Crear un dashboard más visual para dueños y profesores.
+
+## 👥 Autores
+
+- Juan Manuel Gobber
+- Felipe Agustín Gobber
