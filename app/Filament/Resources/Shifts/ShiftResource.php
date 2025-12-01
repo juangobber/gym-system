@@ -21,7 +21,7 @@ class ShiftResource extends Resource
     protected static ?string $model = Shift::class;
 
     protected static UnitEnum|string|null $navigationGroup = 'Gimnasio';
-    protected static BackedEnum|string|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static BackedEnum|string|null $navigationIcon = Heroicon::OutlinedClock;
     protected static ?string $navigationLabel = 'Turnos';
 
      public static function form(Schema $schema): Schema

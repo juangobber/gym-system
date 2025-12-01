@@ -20,7 +20,7 @@ class ActivityResource extends Resource
 {
     protected static ?string $model = Activity::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedListBullet;
     protected static UnitEnum|string|null $navigationGroup = 'Gimnasio';
     protected static ?int $navigationSort = 1;
 

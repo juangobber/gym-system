@@ -17,7 +17,7 @@ class PaymentResource extends Resource
 {
     protected static ?string $model = \App\Models\Payment::class;
 
-    protected static \BackedEnum|string|null $navigationIcon = \Filament\Support\Icons\Heroicon::OutlinedRectangleStack;
+    protected static \BackedEnum|string|null $navigationIcon = \Filament\Support\Icons\Heroicon::OutlinedBanknotes;
     protected static \UnitEnum|string|null $navigationGroup = 'Administración';
     protected static ?string $navigationLabel = 'Pagos';
     protected static ?int $navigationSort = 1;

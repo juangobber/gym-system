@@ -24,7 +24,7 @@ class RoutineResource extends Resource
 {
     protected static ?string $model = Routine::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedClipboardDocumentList;
     protected static UnitEnum|string|null $navigationGroup = 'Gimnasio';
     protected static ?int $navigationSort = 2;
 
