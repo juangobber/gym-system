@@ -22,7 +22,7 @@ class StudentResource extends Resource
     // 👉 Usa el modelo User
     protected static ?string $model = User::class;
     protected static UnitEnum|string|null $navigationGroup = 'Administración';
-    protected static ?int $navigationSort = 1;
+    protected static ?int $navigationSort = 2;
 
     // 👉 Nombre visible en el menú
     protected static ?string $navigationLabel = 'Students';

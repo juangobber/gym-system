@@ -17,6 +17,7 @@ use Filament\Schemas\Schema;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Filament\Forms\Components\Select;
+use App\Models\Activity;
 
 class ShiftsRelationManager extends RelationManager
 {
@@ -29,6 +30,11 @@ class ShiftsRelationManager extends RelationManager
                 Select::make('activity_id')
                     ->label('Actividad')
                     ->relationship('activity', 'name')
+                    ->reactive()
+                    ->afterStateUpdated(function ($state, callable $set) {
+                        $capacity = Activity::find($state)?->capacity;
+                        $set('capacity', $capacity);
+                    })
                     ->required(),
 
                 Select::make('teacher_id')
@@ -70,6 +76,13 @@ class ShiftsRelationManager extends RelationManager
                     return [$time => $time];
                 }))
                 ->required(),
+
+                TextInput::make('capacity')
+                    ->label('Capacidad (desde la actividad)')
+                    ->disabled()
+                    ->dehydrated(true)
+                    ->default(fn ($livewire) => $livewire?->ownerRecord?->capacity)
+                    ->helperText('Se toma de la capacidad definida en la actividad.'),
             ]);
     }
 

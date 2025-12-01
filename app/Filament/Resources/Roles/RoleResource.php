@@ -46,8 +46,6 @@ class RoleResource extends Resource
     {
         return [
             'index' => ListRoles::route('/'),
-            'create' => CreateRole::route('/create'),
-            'edit' => EditRole::route('/{record}/edit'),
         ];
     }
 
@@ -74,21 +72,21 @@ class RoleResource extends Resource
 
     public static function canCreate(): bool
     {
-        return static::adminOnly();
+        return false;
     }
 
     public static function canEdit(Model $record): bool
     {
-        return static::adminOnly();
+        return false;
     }
 
     public static function canDelete(Model $record): bool
     {
-        return static::adminOnly();
+        return false;
     }
 
     public static function canDeleteAny(): bool
     {
-        return static::adminOnly();
+        return false;
     }
 }

@@ -15,6 +15,7 @@ use Filament\Support\Icons\Heroicon;
 use BackedEnum;
 use UnitEnum;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 
 class ShiftResource extends Resource
 {
@@ -44,10 +45,34 @@ class ShiftResource extends Resource
         ];
     }
 
-    protected static function userCanManage(): bool
+    public static function getEloquentQuery(): Builder
+    {
+        $query = parent::getEloquentQuery();
+        $user = auth()->user();
+
+        if ($user && $user->isTeacher()) {
+            return $query->where('teacher_id', $user->id);
+        }
+
+        return $query;
+    }
+
+    protected static function userCanManage(?Model $record = null): bool
     {
         $user = auth()->user();
-        return $user && ($user->isAdmin() || $user->isTeacher());
+        if (! $user) {
+            return false;
+        }
+
+        if ($user->isAdmin()) {
+            return true;
+        }
+
+        if ($user->isTeacher()) {
+            return $record ? $record->teacher_id === $user->id : true;
+        }
+
+        return false;
     }
 
     public static function canViewAny(): bool
@@ -57,26 +82,28 @@ class ShiftResource extends Resource
 
     public static function canView(?Model $record): bool
     {
-        return static::userCanManage();
+        return static::userCanManage($record);
     }
 
     public static function canCreate(): bool
     {
-        return static::userCanManage();
+        $user = auth()->user();
+        return $user && ($user->isAdmin() || $user->isTeacher());
     }
 
     public static function canEdit(Model $record): bool
     {
-        return static::userCanManage();
+        return static::userCanManage($record);
     }
 
     public static function canDelete(Model $record): bool
     {
-        return static::userCanManage();
+        return static::userCanManage($record);
     }
 
     public static function canDeleteAny(): bool
     {
-        return static::userCanManage();
+        $user = auth()->user();
+        return $user && $user->isAdmin();
     }
 }
