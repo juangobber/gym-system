@@ -1,28 +1,37 @@
 <?php
 
-namespace App\Filament\Resources\Roles\Tables;
+namespace App\Filament\Resources\PaymentHistories\Tables;
 
+use App\Models\Payment;
 use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
-use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Filament\Tables\Columns\TextColumn;
 
-class RolesTable
+class PaymentHistoriesTable
 {
     public static function configure(Table $table): Table
     {
         return $table
+            ->query(
+                Payment::query()
+                    ->with('user')
+                    ->orderByDesc('paid_at')
+            )
             ->columns([
-                TextColumn::make('name')
+                TextColumn::make('user.name')
+                    ->label('Alumno')
                     ->searchable(),
-                TextColumn::make('description')
+                TextColumn::make('user.email')
+                    ->label('Correo')
                     ->searchable(),
+                TextColumn::make('paid_at')
+                    ->label('Fecha de pago')
+                    ->date('d/m/Y')
+                    ->sortable(),
                 TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('updated_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -31,10 +40,8 @@ class RolesTable
                 //
             ])
             ->recordActions([
-                //
             ])
             ->toolbarActions([
-                //
             ]);
     }
 }

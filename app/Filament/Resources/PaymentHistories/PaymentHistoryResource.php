@@ -1,13 +1,11 @@
 <?php
 
-namespace App\Filament\Resources\Roles;
+namespace App\Filament\Resources\PaymentHistories;
 
-use App\Filament\Resources\Roles\Pages\CreateRole;
-use App\Filament\Resources\Roles\Pages\EditRole;
-use App\Filament\Resources\Roles\Pages\ListRoles;
-use App\Filament\Resources\Roles\Schemas\RoleForm;
-use App\Filament\Resources\Roles\Tables\RolesTable;
-use App\Models\Role;
+use App\Filament\Resources\PaymentHistories\Pages\ListPaymentHistories;
+use App\Filament\Resources\PaymentHistories\Schemas\PaymentHistoryForm;
+use App\Filament\Resources\PaymentHistories\Tables\PaymentHistoriesTable;
+use App\Models\Payment;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
@@ -16,58 +14,53 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
 use UnitEnum;
 
-class RoleResource extends Resource
+class PaymentHistoryResource extends Resource
 {
-    protected static ?string $model = Role::class;
-    protected static UnitEnum|string|null $navigationGroup = 'Administración';
-    protected static ?int $navigationSort = 4;
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static ?string $model = Payment::class;
 
-    protected static ?string $recordTitleAttribute = 'name';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static ?string $navigationLabel = 'Historial de pagos';
+    protected static UnitEnum|string|null $navigationGroup = 'Administración';
+    protected static ?int $navigationSort = 2;
+
+    protected static ?string $recordTitleAttribute = 'paid_at';
 
     public static function form(Schema $schema): Schema
     {
-        return RoleForm::configure($schema);
+        return PaymentHistoryForm::configure($schema);
     }
 
     public static function table(Table $table): Table
     {
-        return RolesTable::configure($table);
+        return PaymentHistoriesTable::configure($table);
     }
 
     public static function getRelations(): array
     {
-        return [
-            //
-        ];
+        return [];
     }
 
     public static function getPages(): array
     {
         return [
-            'index' => ListRoles::route('/'),
+            'index' => ListPaymentHistories::route('/'),
         ];
     }
 
-    protected static function adminOnly(): bool
+    protected static function userCanManage(): bool
     {
         $user = auth()->user();
-        return $user && $user->isAdmin();
-    }
-
-    public static function shouldRegisterNavigation(): bool
-    {
-        return static::adminOnly();
+        return $user && ($user->isAdmin() || $user->isTeacher());
     }
 
     public static function canViewAny(): bool
     {
-        return static::adminOnly();
+        return static::userCanManage();
     }
 
     public static function canView(?Model $record): bool
     {
-        return static::adminOnly();
+        return static::userCanManage();
     }
 
     public static function canCreate(): bool

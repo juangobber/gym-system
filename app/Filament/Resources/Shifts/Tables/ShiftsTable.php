@@ -43,13 +43,16 @@ class ShiftsTable
                 //
             ])
             ->recordActions([
-                EditAction::make(),
+                EditAction::make()
+                    ->visible(fn ($record) => auth()->user()?->isAdmin() || $record->teacher_id === auth()->id()),
                 DeleteAction::make()
+                    ->visible(fn ($record) => auth()->user()?->isAdmin() || $record->teacher_id === auth()->id())
                     ->requiresConfirmation(),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
-                    DeleteBulkAction::make(),
+                    DeleteBulkAction::make()
+                        ->visible(fn () => auth()->user()?->isAdmin()),
                 ]),
             ]);
     }
