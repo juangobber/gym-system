@@ -18,6 +18,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Filament\Forms\Components\Select;
 use App\Models\Activity;
+use Filament\Actions\ActionGroup;
 
 class ShiftsRelationManager extends RelationManager
 {
@@ -130,15 +131,13 @@ class ShiftsRelationManager extends RelationManager
                 // Se elimina el botón "Associate" para no asociar existentes
             ])
             ->recordActions([
-                EditAction::make(),
-                DissociateAction::make(),
-                DeleteAction::make(),
+                ActionGroup::make([
+                     EditAction::make(),
+                     DeleteAction::make(),
+                ])
             ])
+            
             ->toolbarActions([
-                BulkActionGroup::make([
-                    DissociateBulkAction::make(),
-                    DeleteBulkAction::make(),
-                ]),
             ]);
     }
 }
