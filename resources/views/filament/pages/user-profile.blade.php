@@ -14,7 +14,7 @@
                 />
                 <div>
                     <div class="text-lg font-semibold">
-                        {{ $this->user->name }}
+                       Hola, {{ $this->user->name }}!
                     </div>
                     <div class="text-sm">
                         {{ $this->user->email }}
@@ -67,7 +67,7 @@
                 <div class="flex gap-2">
                     <span class="inline-flex w-48 font-medium text-gray-500 dark:text-gray-400">Rol:</span>
                     <span class="font-semibold text-gray-900 dark:text-gray-100">{{ data_get($this->user, 'role.name', '—') }}</span>
-                    </div>
+                </div>
             </div>
         </x-filament::section>
 
