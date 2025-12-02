@@ -13,9 +13,10 @@ class ShiftForm
 {
     public static function configure(Schema $schema): Schema
     {
-        $timeOptions = collect(range(8 * 60, 21 * 60, 60))->mapWithKeys(function ($minutes) {
-            $time = sprintf('%02d:%02d:00', floor($minutes / 60), $minutes % 60);
-            return [$time => $time];
+        $timeOptions = collect(range(8 * 60, 21 * 60, 15))->mapWithKeys(function ($minutes) {
+            $label = sprintf('%02d:%02d', floor($minutes / 60), $minutes % 60);
+            $value = $label . ':00';
+            return [$value => $label];
         })->all();
 
         return $schema
@@ -100,7 +101,7 @@ class ShiftForm
                             return $timeOptions;
                         }
 
-                        return collect($timeOptions)->filter(fn ($time) => strcmp($time, $start) > 0);
+                        return collect($timeOptions)->filter(fn ($label, $time) => strcmp($time, $start) > 0);
                     })
                     ->reactive()
                     ->afterStateUpdated(function ($state, callable $set, callable $get) {
