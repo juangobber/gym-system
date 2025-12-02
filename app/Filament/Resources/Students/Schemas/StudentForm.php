@@ -53,6 +53,8 @@ class StudentForm
                             ->email()
                             ->required(),
                         TextInput::make('password')
+                            ->label( 'Password')
+                            ->belowContent('Change the password or leave blank to keep current one.')
                             ->password()
                             ->required(fn ($livewire) => $livewire instanceof \Filament\Resources\Pages\CreateRecord)
                             ->dehydrateStateUsing(fn ($state) => filled($state) ? bcrypt($state) : null)
