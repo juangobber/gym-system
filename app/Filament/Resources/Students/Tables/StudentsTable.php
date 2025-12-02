@@ -16,15 +16,13 @@ class StudentsTable
         return $table
             ->columns([
                 TextColumn::make('dni')
+                    ->label('DNI')
                     ->searchable(),
                 TextColumn::make('name')
                     ->searchable(),
                 TextColumn::make('email')
                     ->label('Email address')
                     ->searchable(),
-                TextColumn::make('role.name')
-                    ->label('Role')
-                    ->badge(),
                 TextColumn::make('phone')
                     ->searchable(),
                 IconColumn::make('active')
@@ -45,9 +43,7 @@ class StudentsTable
                 EditAction::make(),
             ])
             ->toolbarActions([
-                BulkActionGroup::make([
-                    DeleteBulkAction::make(),
-                ]),
+     
             ]);
     }
 }
