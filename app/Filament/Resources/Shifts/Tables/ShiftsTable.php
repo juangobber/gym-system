@@ -8,6 +8,7 @@ use Filament\Actions\EditAction;
 use Filament\Actions\DeleteAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Filament\Actions\ActionGroup;
 
 class ShiftsTable
 {
@@ -28,8 +29,8 @@ class ShiftsTable
                         'sunday'    => 'Domingo',
                         default     => $state,
                     }),
-                TextColumn::make('start_time')->label('Inicio')->time(),
-                TextColumn::make('end_time')->label('Fin')->time(),
+                TextColumn::make('start_time')->label('Inicio')->time('H:i'),
+                TextColumn::make('end_time')->label('Fin')->time('H:i'),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -43,17 +44,16 @@ class ShiftsTable
                 //
             ])
             ->recordActions([
-                EditAction::make()
+                ActionGroup::make([
+                    EditAction::make()
                     ->visible(fn ($record) => auth()->user()?->isAdmin() || $record->teacher_id === auth()->id()),
-                DeleteAction::make()
-                    ->visible(fn ($record) => auth()->user()?->isAdmin() || $record->teacher_id === auth()->id())
-                    ->requiresConfirmation(),
+                    DeleteAction::make()
+                        ->visible(fn ($record) => auth()->user()?->isAdmin() || $record->teacher_id === auth()->id())
+                        ->requiresConfirmation(),
+                ])
+                
             ])
             ->toolbarActions([
-                BulkActionGroup::make([
-                    DeleteBulkAction::make()
-                        ->visible(fn () => auth()->user()?->isAdmin()),
-                ]),
             ]);
     }
 }
