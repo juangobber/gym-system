@@ -24,7 +24,12 @@ class UsersTable
                     ->searchable(),
                 TextColumn::make('role.name')
                     ->label('Role')
-                    ->badge(),
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'admin' => 'danger',
+                        'teacher' => 'gray',
+                        'student' => 'warning',
+                    }),
                 TextColumn::make('phone')
                     ->searchable(),
                 IconColumn::make('active')
