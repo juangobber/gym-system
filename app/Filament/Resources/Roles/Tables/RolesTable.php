@@ -15,7 +15,13 @@ class RolesTable
         return $table
             ->columns([
                 TextColumn::make('name')
-                    ->searchable(),
+                    ->searchable()
+                    ->badge()
+                    ->color(fn (string $state): string => match ($state) {
+                        'admin' => 'danger',
+                        'teacher' => 'gray',
+                        'student' => 'warning',
+                    }),
                 TextColumn::make('description')
                     ->searchable(),
                 TextColumn::make('created_at')
