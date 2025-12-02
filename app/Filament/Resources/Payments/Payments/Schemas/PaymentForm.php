@@ -31,6 +31,7 @@ class PaymentForm
 
             DatePicker::make('paid_at')
                 ->label('Fecha de pago')
+                ->default(now())
                 ->required(),
         ]);
     }
