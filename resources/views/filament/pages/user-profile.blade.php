@@ -13,10 +13,10 @@
                     class="w-16 h-16 text-gray-400"
                 />
                 <div>
-                    <div class="text-lg font-semibold text-gray-100">
+                    <div class="text-lg font-semibold">
                         {{ $this->user->name }}
                     </div>
-                    <div class="text-sm text-gray-400">
+                    <div class="text-sm">
                         {{ $this->user->email }}
                     </div>
                 </div>
