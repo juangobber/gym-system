@@ -21,6 +21,8 @@ class PaymentResource extends Resource
     protected static \UnitEnum|string|null $navigationGroup = 'Administración';
     protected static ?string $navigationLabel = 'Pagos';
     protected static ?int $navigationSort = 1;
+    protected static ?string $modelLabel = 'Pago';
+    protected static ?string $pluralModelLabel = 'Pagos';
 
     protected static ?string $recordTitleAttribute = 'name';
 

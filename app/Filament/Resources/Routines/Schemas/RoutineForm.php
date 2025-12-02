@@ -18,10 +18,11 @@ class RoutineForm
     {
         return $schema
             ->components([
-                Section::make('Routine Information')                
+                Section::make('Información de la rutina')                
                 ->schema([
                     Select::make('student_id')
                         ->label('Student')
+                        ->translateLabel()
                         ->relationship(
                             'student',
                             'name',
@@ -40,12 +41,12 @@ class RoutineForm
                         ->preload()
                         ->required(),
 
-                    TextInput::make('name')->required()->label('Routine Name'),
-                    DatePicker::make('start_date')->required()->default(now()->toDateString()),
-                    DatePicker::make('end_date'),
+                    TextInput::make('name')->required()->label('Routine Name')->translateLabel(),
+                    DatePicker::make('start_date')->required()->default(now()->toDateString())->label('Start Date')->translateLabel(),
+                    DatePicker::make('end_date')->label('End Date')->translateLabel(    ),
                     RichEditor::make('description')
-                        ->label('Descripción')
-                        ->belowLabel('Use this area to provide detailed information about the routine.')
+                        ->label('Descripción de la rutina')
+                        ->belowLabel('Utilice este campo para detallar los objetivos y características de la rutina.')
                         ->columnSpanFull()
                         ->extraAttributes(['style' => 'min-height: 500px;']),                   
                 ])

@@ -15,6 +15,7 @@ class RolesTable
         return $table
             ->columns([
                 TextColumn::make('name')
+                    ->label('Rol')
                     ->searchable()
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
@@ -23,12 +24,18 @@ class RolesTable
                         'student' => 'warning',
                     }),
                 TextColumn::make('description')
+                    ->label('Description')
+                    ->translateLabel()
                     ->searchable(),
                 TextColumn::make('created_at')
+                    ->label('Created At')
+                    ->translateLabel()
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('updated_at')
+                    ->label('Updated At')
+                    ->translateLabel()
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),

@@ -19,13 +19,20 @@ class StudentsTable
                     ->label('DNI')
                     ->searchable(),
                 TextColumn::make('name')
+                    ->label('name')
+                    ->translateLabel()   
                     ->searchable(),
                 TextColumn::make('email')
                     ->label('Email address')
+                    ->translateLabel()
                     ->searchable(),
                 TextColumn::make('phone')
+                    ->label('Phone number')
+                    ->translateLabel()
                     ->searchable(),
                 IconColumn::make('active')
+                    ->label('Active')
+                    ->translateLabel()
                     ->boolean(),
                 TextColumn::make('created_at')
                     ->dateTime()

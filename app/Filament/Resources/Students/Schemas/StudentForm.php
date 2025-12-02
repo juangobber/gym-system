@@ -20,7 +20,7 @@ class StudentForm
         return $schema
             ->components([
                 
-                Section::make('Personal Information')
+                Section::make('Información del alumno')
                     ->schema([
                         TextInput::make('dni')
                             ->label('DNI')
@@ -36,25 +36,33 @@ class StudentForm
                                 'unique' => 'DNI existente!',
                             ]),
                         TextInput::make('name')
+                            ->label('name')
+                            ->translateLabel()
                             ->required(),
                         TextInput::make('phone')
+                            ->label('Phone number')
+                            ->translateLabel()
                             ->tel(),
-                        FileUpload::make('Medical certificate'),
+                        FileUpload::make('Medical certificate')
+                        ->label('Medical certificate')
+                        ->translateLabel(),
                         Toggle::make('active')
                             ->label('Is active')
                             ->visible(fn ($livewire) => $livewire instanceof EditStudent) 
                             ->default(true),
                     ])
                     ->columns(1),
-                    Section::make('Account Information')
+                    Section::make('Información de acceso')
                     ->schema([
                         TextInput::make('email')
                             ->label('Email address')
+                            ->translateLabel()
                             ->email()
                             ->required(),
                         TextInput::make('password')
                             ->label( 'Password')
-                            ->belowContent('Change the password or leave blank to keep current one.')
+                            ->translateLabel()
+                            ->belowContent('Cambiar solo si desea actualizar la contraseña.')
                             ->password()
                             ->required(fn ($livewire) => $livewire instanceof \Filament\Resources\Pages\CreateRecord)
                             ->dehydrateStateUsing(fn ($state) => filled($state) ? bcrypt($state) : null)

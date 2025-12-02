@@ -19,17 +19,26 @@ class ActivitiesTable
         return $table
             ->columns([
                 TextColumn::make('name')
-                    ->searchable(),
+                    ->searchable()
+                    ->label('name')
+                    ->translateLabel(),
                 TextColumn::make('capacity')
                     ->label('Capacity')
+                    ->translateLabel()
                     ->sortable(),
                 IconColumn::make('is_active')
+                    ->label('Active')
+                    ->translateLabel()
                     ->boolean(),
                 TextColumn::make('created_at')
+                    ->label('Created At')
+                    ->translateLabel()
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('updated_at')
+                    ->label('Updated At')
+                    ->translateLabel()
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),

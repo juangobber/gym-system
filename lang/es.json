@@ -1,0 +1,18 @@
+{
+    "Activities": "Actividades",
+    "name": "Nombre",
+    "Capacity": "Capacidad",
+    "Active": "Activo",
+    "Created At": "Creado el",
+    "Updated At": "Actualizado el",
+    "Activity Information": "Información de la Actividad",
+    "Start Date": "Fecha de Inicio",
+    "End Date": "Fecha de Fin",
+    "Routine Name": "Nombre de la Rutina",
+    "Student"  : "Alumno",
+    "Email address": "Dirección de correo electrónico",
+    "Phone number": "Número de teléfono",
+    "Password": "Contraseña",
+    "Medical certificate": "Apto médico"
+
+}

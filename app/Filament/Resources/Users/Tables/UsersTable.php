@@ -16,14 +16,18 @@ class UsersTable
         return $table
             ->columns([
                 TextColumn::make('dni')
+                    ->label('DNI')
                     ->searchable(),
                 TextColumn::make('name')
+                    ->label('name')
+                    ->translateLabel()
                     ->searchable(),
                 TextColumn::make('email')
                     ->label('Email address')
+                    ->translateLabel()
                     ->searchable(),
                 TextColumn::make('role.name')
-                    ->label('Role')
+                    ->label('Rol')
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
                         'admin' => 'danger',
@@ -31,14 +35,22 @@ class UsersTable
                         'student' => 'warning',
                     }),
                 TextColumn::make('phone')
+                    ->label('Phone number')
+                    ->translateLabel()
                     ->searchable(),
                 IconColumn::make('active')
+                    ->label('Active')
+                    ->translateLabel()
                     ->boolean(),
                 TextColumn::make('created_at')
+                    ->label('Created At')
+                    ->translateLabel()
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('updated_at')
+                    ->label('Updated At')
+                    ->translateLabel()
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),

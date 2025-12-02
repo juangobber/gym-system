@@ -25,9 +25,9 @@ class TeacherResource extends Resource
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedAcademicCap;
     protected static UnitEnum|string|null $navigationGroup = 'Administración';
     protected static ?int $navigationSort = 2;
-    protected static ?string $navigationLabel = 'Teachers';
-    protected static ?string $modelLabel = 'Teacher';
-    protected static ?string $pluralModelLabel = 'Teachers';
+    protected static ?string $navigationLabel = 'Profesores';
+    protected static ?string $modelLabel = 'Profesor';
+    protected static ?string $pluralModelLabel = 'Profesores';
     protected static ?string $recordTitleAttribute = 'name';
 
 

@@ -25,9 +25,9 @@ class StudentResource extends Resource
     protected static ?int $navigationSort = 2;
 
     // 👉 Nombre visible en el menú
-    protected static ?string $navigationLabel = 'Students';
-    protected static ?string $modelLabel = 'Student';
-    protected static ?string $pluralModelLabel = 'Students';
+    protected static ?string $navigationLabel = 'Alumnos';
+    protected static ?string $modelLabel = 'Alumno';
+    protected static ?string $pluralModelLabel = 'Alumnos';
 
     // 👉 Ícono del menú
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedUserGroup;

@@ -18,60 +18,81 @@ use Filament\Actions\EditAction;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\ViewAction;
 use App\Models\User; 
+use Filament\Actions\ActionGroup;
 
 class RoutinesRelationManager extends RelationManager
 {
     protected static string $relationship = 'routines';
+    
+    protected static ?string $title = 'Rutinas';
 
     public function table(Table $table): Table
     {
         return $table
             ->columns([
-                TextColumn::make('student_id')
-                    ->searchable(),
                 TextColumn::make('name')
+                    ->label('Título')
                     ->searchable(),
                 TextColumn::make('start_date')
+                    ->label('Start Date')
+                    ->translateLabel()
                     ->date()
                     ->sortable(),
                 TextColumn::make('end_date')
+                    ->label('End Date')
+                    ->translateLabel()
                     ->date()
                     ->sortable(),
                 TextColumn::make('created_at')
+                    ->label('Created At')
+                    ->translateLabel()
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('updated_at')
+                    ->label('Updated At')
+                    ->translateLabel()
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->headerActions([
                 CreateAction::make()
-                 ->form([
-                        // campos del formulario para crear una rutina
-                        TextInput::make('name')
-                            ->label('Título')
+                    ->label('Crear rutina')
+                    ->form([
+                            // campos del formulario para crear una rutina
+                            TextInput::make('name')
+                                ->label('Título')
+                                ->required(),
+
+                            DatePicker::make('start_date')
+                            ->label('Start Date')
+                             ->translateLabel()
+                                ->default(now()->toDateString())
                             ->required(),
 
-                        DatePicker::make('start_date')
-                        ->required(),
+                            DatePicker::make('end_date')
+                            ->label('End Date')
+                             ->translateLabel(),
 
-                        DatePicker::make('end_date'),
+                            RichEditor::make('description')
+                                ->label('Descripción')
+                                ->extraAttributes(['style' => 'min-height: 400px;'])
+,
 
-                        RichEditor::make('description')
-                            ->label('Descripción'),
-
-                        // HIDDEN student_id autocompletado con el ownerRecord->id
-                        Hidden::make('student_id')
-                            ->default(fn ($livewire) => $livewire->ownerRecord->id)
-                            ->dehydrated(true), // FORZAR que se envíe el campo aunque esté oculto
-                    ]),
-            ])
-            ->actions([
-                ViewAction::make(),
-                EditAction::make(),
-                DeleteAction::make(),
+                            // HIDDEN student_id autocompletado con el ownerRecord->id
+                            Hidden::make('student_id')
+                                ->default(fn ($livewire) => $livewire->ownerRecord->id)
+                                ->dehydrated(true), // FORZAR que se envíe el campo aunque esté oculto
+                        ]),
+                ])
+                ->actions([
+                    ActionGroup::make([
+                        ViewAction::make(),
+                        EditAction::make(),
+                        DeleteAction::make(),
+                    ])
+                    
 
             ]);
     }

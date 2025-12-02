@@ -19,22 +19,29 @@ class TeacherForm
 
         return $schema
             ->components([
-                Section::make('Teacher Information')
+                Section::make('Información del profesor')
                     ->schema([
                         TextInput::make('dni')
                         ->label('DNI'),
                         TextInput::make('name')
+                            ->label('name')
+                            ->translateLabel()
                             ->required(),
                         TextInput::make('phone')
+                            ->label('Phone number')
+                            ->translateLabel()
                         ->tel(),
                     ]),
-                Section::make('Account Information')
+                Section::make('Información de acceso')
             ->schema([
                     TextInput::make('email')
                     ->label('Email address')
+                    ->translateLabel()
                     ->email()
                     ->required(),
                 TextInput::make('password')
+                    ->label('Password')
+                    ->translateLabel()
                     ->password()
                     ->required(fn ($livewire) => $livewire instanceof \Filament\Resources\Pages\CreateRecord)
                     ->dehydrateStateUsing(fn ($state) => filled($state) ? bcrypt($state) : null)

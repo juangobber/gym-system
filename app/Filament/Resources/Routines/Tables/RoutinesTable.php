@@ -21,11 +21,17 @@ class RoutinesTable
                     ->label('Alumno')
                     ->searchable(),
                 TextColumn::make('name')
+                    ->label('name')
+                    ->translateLabel()
                     ->searchable(),
                 TextColumn::make('start_date')
+                    ->label('Start Date')
+                    ->translateLabel()
                     ->date()
                     ->sortable(),
                 TextColumn::make('end_date')
+                    ->label('End Date')
+                    ->translateLabel()
                     ->date()
                     ->sortable(),
                 TextColumn::make('created_at')
