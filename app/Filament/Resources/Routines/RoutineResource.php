@@ -18,6 +18,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use UnitEnum;
 use Filament\Infolists\Components\TextEntry;
+use Filament\Schemas\Components\Section;
 
 
 class RoutineResource extends Resource
@@ -77,15 +78,24 @@ class RoutineResource extends Resource
     public static function infolist(Schema $schema): Schema
     {
         return $schema->components([
-            TextEntry::make('student.name')->label('Student'),
-            TextEntry::make('name')->label('Name'),
-            TextEntry::make('start_date')->label('Start date'),
-            TextEntry::make('end_date')->label('End date')->placeholder('—'),
-            TextEntry::make('description')
-                ->label('Description')
-                ->columnSpanFull()
-                ->prose()
-                ->hidden(fn ($state) => blank($state)),
+            Section::make('Routine information')
+                ->schema([
+                    TextEntry::make('student.name')->label('Student'),
+                    TextEntry::make('name')->label('Routine name'),
+                    TextEntry::make('start_date')->label('Start date'),
+                    TextEntry::make('end_date')->label('End date')->placeholder('—'),
+
+                    ])
+                    ->columns(2)
+                    ->columnSpanFull(),
+            Section::make('Your routine´s details')->schema([
+                TextEntry::make('description')
+                    ->label('Description')
+                    ->columnSpanFull()
+                    ->prose()
+                    ->hidden(fn ($state) => blank($state)),
+            ])
+            ->columnSpanFull(),
         ]);
     }
 

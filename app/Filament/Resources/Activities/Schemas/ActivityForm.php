@@ -8,6 +8,7 @@ use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Schema;
 use Illuminate\Validation\Rules\Unique;
 use App\Models\Shift;
+use Filament\Schemas\Components\Section;
 
 class ActivityForm
 {
@@ -15,6 +16,8 @@ class ActivityForm
     {
         return $schema
             ->components([
+                Section::make('Activity Information')                
+            ->schema([
                 TextInput::make('name')
                     ->label('Name')
                     ->required()
@@ -22,8 +25,6 @@ class ActivityForm
                     ->unique(ignoreRecord: true, modifyRuleUsing: function (Unique $rule) {
                         return $rule->whereNull('deleted_at');
                     }),
-                Textarea::make('description')
-                    ->columnSpanFull(),
                 TextInput::make('capacity')
                     ->label('Capacidad')
                     ->numeric()
@@ -46,9 +47,16 @@ class ActivityForm
                             $fail("La capacidad no puede ser menor a {$maxEnrolled} alumnos inscriptos.");
                         }
                     }),
+                Textarea::make('description')
+                    ->label('Descripción')
+                    ->afterLabel('This is optional')
+                    ->columnSpanFull(),
                 Toggle::make('is_active')
                     ->visible(fn ($livewire) => $livewire instanceof \App\Filament\Resources\Activities\Pages\EditActivity)
                     ->default(true)
+            ])
+            ->columns(1),
+                
             ]);
     }
 }

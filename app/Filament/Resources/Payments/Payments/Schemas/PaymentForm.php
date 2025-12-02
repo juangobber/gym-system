@@ -7,6 +7,7 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\DatePicker;
 use Illuminate\Database\Eloquent\Builder;
 use App\Models\User;
+use Filament\Schemas\Components\Section;
 
 
 class PaymentForm
@@ -14,7 +15,9 @@ class PaymentForm
     public static function configure(Schema $schema): Schema
     {
         return $schema->components([
-            Select::make('user_id')
+            Section::make('Payment Information')                
+            ->schema([
+                Select::make('user_id')
                 ->label('Estudiante')
                 // 1) nombre de la relación en Payment + atributo de título
                 ->relationship('user', 'name', function (Builder $query) {
@@ -29,10 +32,12 @@ class PaymentForm
                 ->getOptionLabelFromRecordUsing(fn (?User $r) => $r ? "{$r->name} — {$r->email}" : '')
                 ->required(),
 
-            DatePicker::make('paid_at')
-                ->label('Fecha de pago')
-                ->default(now())
-                ->required(),
+                DatePicker::make('paid_at')
+                    ->label('Fecha de pago')
+                    ->default(now())
+                    ->required(),
+            ])
+            
         ]);
     }
 }

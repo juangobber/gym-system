@@ -9,7 +9,8 @@ use Filament\Forms\Components\RichEditor;
 use Filament\Schemas\Schema;
 use App\Models\User;
 use App\Models\Routine;
-use App\Models\Role; // 👈 importa Role
+use App\Models\Role;
+use Filament\Schemas\Components\Section;
 
 class RoutineForm
 {
@@ -17,32 +18,39 @@ class RoutineForm
     {
         return $schema
             ->components([
-                Select::make('student_id')
-                    ->label('Student')
-                    ->relationship(
-                        'student',
-                        'name',
-                        fn ($query) => $query->where(
-                            'role_id',
-                            Role::where('name', 'student')->value('id')
+                Section::make('Routine Information')                
+                ->schema([
+                    Select::make('student_id')
+                        ->label('Student')
+                        ->relationship(
+                            'student',
+                            'name',
+                            fn ($query) => $query->where(
+                                'role_id',
+                                Role::where('name', 'student')->value('id')
+                            )
                         )
-                    )
-                    ->getOptionLabelFromRecordUsing(fn ($record) => "{$record->name} - DNI: {$record->dni}")
-                    ->placeholder('Seleccionar alumno')                     // 👈 texto cuando no hay selección
-                    ->disabled(function () {                             // 👈 deshabilitar si no existen
-                        $studentRoleId = Role::where('name', 'student')->value('id');
-                        return User::where('role_id', $studentRoleId)->doesntExist();
-                    })
-                    ->searchable()
-                    ->preload()
-                    ->required(),
+                        ->getOptionLabelFromRecordUsing(fn ($record) => "{$record->name} - DNI: {$record->dni}")
+                        ->placeholder('Seleccionar alumno')                     
+                        ->disabled(function () {                             
+                            $studentRoleId = Role::where('name', 'student')->value('id');
+                            return User::where('role_id', $studentRoleId)->doesntExist();
+                        })
+                        ->searchable()
+                        ->preload()
+                        ->required(),
 
-                TextInput::make('name')->required(),
-                DatePicker::make('start_date')->required(),
-                DatePicker::make('end_date'),
-                RichEditor::make('description')
-                    ->columnSpanFull()
-                    ->extraAttributes(['style' => 'min-height: 500px;']),
+                    TextInput::make('name')->required()->label('Routine Name'),
+                    DatePicker::make('start_date')->required()->default(now()->toDateString()),
+                    DatePicker::make('end_date'),
+                    RichEditor::make('description')
+                        ->label('Descripción')
+                        ->belowLabel('Use this area to provide detailed information about the routine.')
+                        ->columnSpanFull()
+                        ->extraAttributes(['style' => 'min-height: 500px;']),                   
+                ])
+                ->columns(2)
+                ->columnSpanFull(),              
             ]);
     }
 }

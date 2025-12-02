@@ -9,6 +9,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Components\Hidden;
 use App\Models\Role;
+use Filament\Schemas\Components\Section;
 
 class TeacherForm
 {
@@ -18,10 +19,18 @@ class TeacherForm
 
         return $schema
             ->components([
-                TextInput::make('dni'),
-                TextInput::make('name')
-                    ->required(),
-                TextInput::make('email')
+                Section::make('Teacher Information')
+                    ->schema([
+                        TextInput::make('dni')
+                        ->label('DNI'),
+                        TextInput::make('name')
+                            ->required(),
+                        TextInput::make('phone')
+                        ->tel(),
+                    ]),
+                Section::make('Account Information')
+            ->schema([
+                    TextInput::make('email')
                     ->label('Email address')
                     ->email()
                     ->required(),
@@ -30,12 +39,13 @@ class TeacherForm
                     ->required(fn ($livewire) => $livewire instanceof \Filament\Resources\Pages\CreateRecord)
                     ->dehydrateStateUsing(fn ($state) => filled($state) ? bcrypt($state) : null)
                     ->dehydrated(fn ($state) => filled($state)),
-                TextInput::make('phone')
-                    ->tel(),
                 Toggle::make('active')
                     ->label('Is active')
                     ->visible(fn ($livewire) => $livewire instanceof EditTeacher) 
                     ->default(true),
-            ]);
+            ])
+                
+                
+        ]);
     }
 }
