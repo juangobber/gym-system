@@ -8,10 +8,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
-
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    {{-- Tu CSS local --}}
+    <link rel="icon" type="image/png" href="{{ asset('img/favicon.png') }}">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 </head>
 
@@ -21,8 +19,12 @@
     <nav class="navbar navbar-expand-lg bg-dark sticky-top">
       <div class="container">
         <a class="navbar-brand" href="#">
+            <img src="{{ asset('img/forza-logo.png') }}" alt="Forza Logo" height="40"> 
+        
+            <!-- 
             <span class="text-white fw-bold">FORZA</span> 
             <span class="orange">entrenamientos</span>
+            -->
         </a>
 
         <button class="navbar-toggler collapsed link-light bg-secondary"
