@@ -144,10 +144,31 @@ class ShiftForm
 
                 TextInput::make('capacity')
                     ->label('Capacidad (desde la actividad)')
+                    ->numeric()
+                    ->minValue(1)
+                    ->required()
                     ->dehydrated(true)
-                    ->disabled()
                     ->reactive()
                     ->default(fn ($get) => Activity::find($get('activity_id'))?->capacity)
+                    ->rules(function ($get) {
+                        return [
+                            function (string $attribute, $value, $fail) use ($get) {
+                                if ($value === null) {
+                                    return;
+                                }
+
+                                $activityId = $get('activity_id');
+                                if (! $activityId) {
+                                    return;
+                                }
+
+                                $activityCapacity = Activity::find($activityId)?->capacity;
+                                if ($activityCapacity !== null && $value > $activityCapacity) {
+                                    $fail("La capacidad del turno no puede ser mayor que la capacidad de la actividad ({$activityCapacity}).");
+                                }
+                            },
+                        ];
+                    })
                     ->helperText('Se toma de la capacidad definida en la actividad.'),
             ]);
     }

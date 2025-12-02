@@ -18,6 +18,7 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use App\Http\Middleware\RedirectAdminRootToProfile;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -30,6 +31,7 @@ class AdminPanelProvider extends PanelProvider
             ->brandLogo(asset('img/forza-logo.png'))
             ->brandLogoHeight('2.5rem')
             ->favicon(asset('img/favicon.png'))
+            ->homeUrl(fn () => url('/admin/perfil'))
             ->login()
             ->viteTheme('resources/css/filament/admin/theme.css')
             ->colors([
@@ -55,6 +57,7 @@ class AdminPanelProvider extends PanelProvider
                 SubstituteBindings::class,
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
+                RedirectAdminRootToProfile::class,
             ])
             ->authMiddleware([
                 Authenticate::class,

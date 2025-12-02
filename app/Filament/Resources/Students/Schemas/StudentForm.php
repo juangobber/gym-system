@@ -11,7 +11,6 @@ use App\Models\Role;
 use Illuminate\Validation\Rules\Unique;
 use Filament\Forms\Components\Card;
 use Filament\Schemas\Components\Section;
-use Filament\Forms\Components\FileUpload;
 
 class StudentForm
 {
@@ -43,9 +42,6 @@ class StudentForm
                             ->label('Phone number')
                             ->translateLabel()
                             ->tel(),
-                        FileUpload::make('Medical certificate')
-                        ->label('Medical certificate')
-                        ->translateLabel(),
                         Toggle::make('active')
                             ->label('Is active')
                             ->visible(fn ($livewire) => $livewire instanceof EditStudent) 

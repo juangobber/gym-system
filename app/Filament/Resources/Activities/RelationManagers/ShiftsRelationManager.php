@@ -80,9 +80,31 @@ class ShiftsRelationManager extends RelationManager
 
                 TextInput::make('capacity')
                     ->label('Capacidad (desde la actividad)')
-                    ->disabled()
+                    ->numeric()
+                    ->minValue(1)
+                    ->required()
                     ->dehydrated(true)
+                    ->reactive()
                     ->default(fn ($livewire) => $livewire?->ownerRecord?->capacity)
+                    ->rules(function ($get) {
+                        return [
+                            function (string $attribute, $value, $fail) use ($get) {
+                                if ($value === null) {
+                                    return;
+                                }
+
+                                $activityId = $get('activity_id') ?? $this->ownerRecord?->id;
+                                if (! $activityId) {
+                                    return;
+                                }
+
+                                $activityCapacity = Activity::find($activityId)?->capacity ?? $this->ownerRecord?->capacity;
+                                if ($activityCapacity !== null && $value > $activityCapacity) {
+                                    $fail("La capacidad del turno no puede ser mayor que la capacidad de la actividad ({$activityCapacity}).");
+                                }
+                            },
+                        ];
+                    })
                     ->helperText('Se toma de la capacidad definida en la actividad.'),
             ]);
     }
