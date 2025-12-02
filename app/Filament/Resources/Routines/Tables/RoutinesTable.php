@@ -9,6 +9,7 @@ use Filament\Actions\DeleteAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use App\Models\User; 
+use Filament\Actions\ActionGroup;
 
 class RoutinesTable
 {
@@ -40,11 +41,13 @@ class RoutinesTable
                 //
             ])
             ->recordActions([
-                EditAction::make()
+                ActionGroup::Make([
+                     EditAction::make()
                     ->visible(fn () => auth()->user()?->isAdmin() || auth()->user()?->isTeacher()),
                 DeleteAction::make()
                     ->requiresConfirmation()
                     ->visible(fn () => auth()->user()?->isAdmin() || auth()->user()?->isTeacher()),
+                ])
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
