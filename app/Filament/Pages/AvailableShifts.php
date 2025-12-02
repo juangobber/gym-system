@@ -81,12 +81,12 @@ class AvailableShifts extends Page implements Tables\Contracts\HasTable
 
                 TextColumn::make('start_time')
                     ->label('Hora de inicio')
-                        ->time('H:i:s')   // muestra 08:00:00
+                        ->time('H:i')   
                         ->sortable(),
 
                 TextColumn::make('end_time')
                     ->label('Hora de fin')
-                    ->time('H:i:s') 
+                    ->time('H:i') 
                     ->sortable(),
 
                 TextColumn::make('capacity')
@@ -118,12 +118,12 @@ class AvailableShifts extends Page implements Tables\Contracts\HasTable
                             return 'Sin cupos';
                         }
                     
-                        return 'Inscribirse';
+                        return 'Cupos disponibles';
                     })
                     ->colors([
                         'success' => fn (string $state) => $state === 'Inscripto',
                         'danger'  => fn (string $state) => $state === 'Sin cupos',
-                        'primary' => fn (string $state) => $state === 'Inscribirse',
+                        'primary' => fn (string $state) => $state === 'Cupos disponibles',
                     ]),
             ])
             ->filters([
