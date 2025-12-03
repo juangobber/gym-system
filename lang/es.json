@@ -15,6 +15,9 @@
     "Password": "Contraseña",
     "Medical certificate": "Apto médico",
     "Routine name": "Nombre de la rutina",
-    "Descripción": "Descripción"
+    "Descripción": "Descripción",
+    "Teacher name": "Nombre del profesor",
+    "Start Time": "Hora de inicio",
+    "End Time": "Hora de fin"
 
 }
