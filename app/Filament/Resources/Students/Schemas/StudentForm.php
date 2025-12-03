@@ -54,7 +54,17 @@ class StudentForm
                             ->label('Email address')
                             ->translateLabel()
                             ->email()
-                            ->required(),
+                            ->required()
+                            ->unique(
+                                table: 'users',
+                                column: 'email',
+                                ignorable: fn ($record) => $record,
+                                modifyRuleUsing: fn (Unique $rule) => $rule
+                            )
+                            ->validationAttribute('Email')
+                            ->validationMessages([
+                                'unique' => 'Email existente!',
+                            ]),
                         TextInput::make('password')
                             ->label( 'Password')
                             ->translateLabel()

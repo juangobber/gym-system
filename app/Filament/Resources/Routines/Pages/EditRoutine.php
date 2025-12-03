@@ -22,4 +22,9 @@ class EditRoutine extends EditRecord
         $user = auth()->user();
         return $user && ($user->isAdmin() || $user->isTeacher());
     }
+    
+    protected function getRedirectUrl(): string
+    {
+        return static::getResource()::getUrl('index');
+    }
 }

@@ -10,6 +10,7 @@ use Filament\Forms\Components\Toggle;
 use Filament\Forms\Components\Hidden;
 use App\Models\Role;
 use Filament\Schemas\Components\Section;
+use Illuminate\Validation\Rules\Unique;
 
 class TeacherForm
 {
@@ -22,7 +23,18 @@ class TeacherForm
                 Section::make('Información del profesor')
                     ->schema([
                         TextInput::make('dni')
-                        ->label('DNI'),
+                        ->label('DNI')
+                        ->required()
+                        ->unique(
+                            table: 'users',
+                            column: 'dni',
+                            ignorable: fn ($record) => $record,
+                            modifyRuleUsing: fn (Unique $rule) => $rule
+                        )
+                        ->validationAttribute('DNI')
+                        ->validationMessages([
+                            'unique' => 'DNI existente!',
+                        ]),
                         TextInput::make('name')
                             ->label('name')
                             ->translateLabel()
@@ -38,7 +50,17 @@ class TeacherForm
                     ->label('Email address')
                     ->translateLabel()
                     ->email()
-                    ->required(),
+                    ->required()
+                    ->unique(
+                        table: 'users',
+                        column: 'email',
+                        ignorable: fn ($record) => $record,
+                        modifyRuleUsing: fn (Unique $rule) => $rule
+                    )
+                    ->validationAttribute('Email')
+                    ->validationMessages([
+                        'unique' => 'Email existente!',
+                    ]),
                 TextInput::make('password')
                     ->label('Password')
                     ->translateLabel()

@@ -130,13 +130,14 @@ class ShiftForm
                                 if (! $day || ! $start || ! $end) {
                                     return;
                                 }
-
-                                $currentId = request()->route('record');
+ 
+                                // Excluir el turno que se está editando para permitir actualizarlo sin conflicto
+                                $currentId = $get('id') ?? request()->route('record');
                                 $exists = Shift::query()
                                     ->where('day_of_week', $day)
                                     ->where('start_time', $start)
                                     ->where('end_time', $end)
-                                    ->when($currentId, fn ($q) => $q->where('id', '!=', $currentId))
+                                    ->when($currentId, fn ($q) => $q->whereKeyNot($currentId))
                                     ->exists();
 
                                 if ($exists) {
@@ -147,7 +148,7 @@ class ShiftForm
                     }),
 
                 TextInput::make('capacity')
-                    ->label('Capacidad (desde la actividad)')
+                    ->label('Capacidad')
                     ->numeric()
                     ->minValue(1)
                     ->required()

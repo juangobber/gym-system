@@ -8,6 +8,7 @@ use Filament\Forms\Components\Toggle;
 use App\Models\Role;
 use Filament\Schemas\Schema;
 use Filament\Schemas\Components\Section;
+use Illuminate\Validation\Rules\Unique;
 
 class UserForm
 {
@@ -18,7 +19,18 @@ class UserForm
                 Section::make('Información del usuario')
                 ->schema([
                     TextInput::make('dni')
-                        ->label('DNI'),
+                        ->label('DNI')
+                        ->required()
+                        ->unique(
+                            table: 'users',
+                            column: 'dni',
+                            ignorable: fn ($record) => $record,
+                            modifyRuleUsing: fn (Unique $rule) => $rule
+                        )
+                        ->validationAttribute('DNI')
+                        ->validationMessages([
+                            'unique' => 'DNI existente!',
+                        ]),
                     TextInput::make('name')
                         ->label('name')
                         ->translateLabel()
@@ -34,7 +46,17 @@ class UserForm
                         ->label('Email address')
                         ->translateLabel()
                         ->email()
-                        ->required(),
+                        ->required()
+                        ->unique(
+                            table: 'users',
+                            column: 'email',
+                            ignorable: fn ($record) => $record,
+                            modifyRuleUsing: fn (Unique $rule) => $rule
+                        )
+                        ->validationAttribute('Email')
+                        ->validationMessages([
+                            'unique' => 'Email existente!',
+                        ]),
                         TextInput::make('password')
                             ->label('Password')
                             ->translateLabel()
