@@ -24,6 +24,8 @@ class ShiftsRelationManager extends RelationManager
 {
     protected static string $relationship = 'shifts';
 
+    protected static ?string $title = 'Turnos';
+
     public function form(Schema $schema): Schema
     {
         return $schema
@@ -60,7 +62,7 @@ class ShiftsRelationManager extends RelationManager
                         'saturday'  => 'Sábado',
                         'sunday'    => 'Domingo',
                     ])
-                    ->required(),
+                    ->required(), 
 
                 Select::make('start_time')
                     ->label('Hora de inicio')
@@ -116,6 +118,7 @@ class ShiftsRelationManager extends RelationManager
             ->columns([
                 TextColumn::make('teacher.Name')
                     ->label('Teacher name')
+                    ->translateLabel()
                     ->sortable()
                     ->searchable()
                     ->getStateUsing(function ($record) {
@@ -126,14 +129,33 @@ class ShiftsRelationManager extends RelationManager
                         return '—'; // guion si no tiene profe asignado o no es docente
                     }),
                 TextColumn::make('day_of_week')
-                    ->searchable(),
+                    ->label('Día de la semana')
+                    ->searchable()
+                    ->getStateUsing(function ($record) {
+                        $days = [
+                            'monday'    => 'Lunes',
+                            'tuesday'   => 'Martes',
+                            'wednesday' => 'Miércoles',
+                            'thursday'  => 'Jueves',
+                            'friday'    => 'Viernes',
+                            'saturday'  => 'Sábado',
+                            'sunday'    => 'Domingo',
+                        ];
+                        return $days[$record->day_of_week] ?? $record->day_of_week;
+                    }),
                 TextColumn::make('start_time')
+                    ->label('Start Time')
+                    ->translateLabel()
                     ->time()
                     ->sortable(),
                 TextColumn::make('end_time')
+                    ->label('End Time')
+                    ->translateLabel()
                     ->time()
                     ->sortable(),
                 TextColumn::make('capacity')
+                    ->label('Capacity')
+                    ->translateLabel()
                     ->numeric()
                     ->sortable(),
                 TextColumn::make('created_at')
@@ -149,7 +171,9 @@ class ShiftsRelationManager extends RelationManager
                 //
             ])
             ->headerActions([
-                CreateAction::make(),
+                CreateAction::make()
+                ->label('Crear turno')
+                ->modalHeading('Crear turno'),
                 // Se elimina el botón "Associate" para no asociar existentes
             ])
             ->recordActions([
