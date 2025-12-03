@@ -46,4 +46,10 @@ class EditActivity extends EditRecord
             $this->halt();
         }
     }
+
+        
+    protected function getRedirectUrl(): string
+    {
+        return static::getResource()::getUrl('index');
+    }
 }
