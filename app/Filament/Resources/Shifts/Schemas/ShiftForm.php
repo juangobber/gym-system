@@ -8,6 +8,7 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
 use Illuminate\Database\Eloquent\Builder;
+use Filament\Schemas\Components\Section;
 
 class ShiftForm
 {
@@ -21,6 +22,8 @@ class ShiftForm
 
         return $schema
             ->components([
+                Section::make('Información del turno')
+            ->schema([
                 Select::make('activity_id')
                     ->label('Actividad')
                     ->relationship('activity', 'name', function (Builder $query) {
@@ -171,6 +174,8 @@ class ShiftForm
                         ];
                     })
                     ->helperText('Se toma de la capacidad definida en la actividad.'),
+            ])
+
             ]);
     }
 }
