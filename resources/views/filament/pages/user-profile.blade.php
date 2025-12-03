@@ -51,20 +51,22 @@
                     <span class="inline-flex w-48 font-medium text-gray-500 dark:text-gray-400">Telefono:</span>
                     <span class="font-semibold text-gray-900 dark:text-gray-100">{{ $this->user?->phone ?? '-' }}</span>
                 </div>
-                <div class="flex gap-2">
-                    <span class="inline-flex w-48 font-medium text-gray-500 dark:text-gray-400">Ultimo pago:</span>
-                    <span class="font-semibold text-gray-900 dark:text-gray-100">{{ $lastPaid ? Carbon::parse($lastPaid)->format('d/m/Y') : '-' }}</span>
-                </div>
-                <div class="flex gap-2 items-center">
-                    <span class="inline-flex w-48 font-medium text-gray-500 dark:text-gray-400">Estado de pago:</span>
-                    @if($lastPaid)
-                        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium {{ $paymentStatus === 'Al dia' ? 'bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-300' : 'bg-rose-100 text-rose-700 dark:bg-rose-900/40 dark:text-rose-300' }}">
-                            {{ $paymentStatus }}
-                        </span>
-                    @else
-                        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-rose-100 text-rose-700 dark:bg-rose-900/40 dark:text-rose-300">Vencido</span>
-                    @endif
-                </div>
+                @if($this->user?->isStudent())
+                    <div class="flex gap-2">
+                        <span class="inline-flex w-48 font-medium text-gray-500 dark:text-gray-400">Ultimo pago:</span>
+                        <span class="font-semibold text-gray-900 dark:text-gray-100">{{ $lastPaid ? Carbon::parse($lastPaid)->format('d/m/Y') : '-' }}</span>
+                    </div>
+                    <div class="flex gap-2 items-center">
+                        <span class="inline-flex w-48 font-medium text-gray-500 dark:text-gray-400">Estado de pago:</span>
+                        @if($lastPaid)
+                            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium {{ $paymentStatus === 'Al dia' ? 'bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-300' : 'bg-rose-100 text-rose-700 dark:bg-rose-900/40 dark:text-rose-300' }}">
+                                {{ $paymentStatus }}
+                            </span>
+                        @else
+                            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-rose-100 text-rose-700 dark:bg-rose-900/40 dark:text-rose-300">Vencido</span>
+                        @endif
+                    </div>
+                @endif
                 <div class="flex gap-2">
                     <span class="inline-flex w-48 font-medium text-gray-500 dark:text-gray-400">Rol:</span>
                     <span class="font-semibold text-gray-900 dark:text-gray-100">{{ data_get($this->user, 'role.name', '-') }}</span>
