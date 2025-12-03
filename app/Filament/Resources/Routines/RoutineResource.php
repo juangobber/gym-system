@@ -80,19 +80,20 @@ class RoutineResource extends Resource
     public static function infolist(Schema $schema): Schema
     {
         return $schema->components([
-            Section::make('Routine information')
+            Section::make('Información de la rutina')
                 ->schema([
-                    TextEntry::make('student.name')->label('Student'),
-                    TextEntry::make('name')->label('Routine name'),
-                    TextEntry::make('start_date')->label('Start date'),
-                    TextEntry::make('end_date')->label('End date')->placeholder('—'),
+                    TextEntry::make('student.name')->label('Student')->translateLabel(),
+                    TextEntry::make('name')->label('Routine name')->translateLabel(),
+                    TextEntry::make('start_date')->label('Start Date')->translateLabel(),
+                    TextEntry::make('end_date')->label('End Date')->translateLabel()->placeholder('—'),
 
                     ])
                     ->columns(2)
                     ->columnSpanFull(),
-            Section::make('Your routine´s details')->schema([
+            Section::make('Detalles de tu rutina')->schema([
                 TextEntry::make('description')
                     ->label('Description')
+                    ->translateLabel()
                     ->columnSpanFull()
                     ->prose()
                     ->hidden(fn ($state) => blank($state)),

@@ -13,6 +13,8 @@
     "Email address": "Dirección de correo electrónico",
     "Phone number": "Número de teléfono",
     "Password": "Contraseña",
-    "Medical certificate": "Apto médico"
+    "Medical certificate": "Apto médico",
+    "Routine name": "Nombre de la rutina",
+    "Descripción": "Descripción"
 
 }
