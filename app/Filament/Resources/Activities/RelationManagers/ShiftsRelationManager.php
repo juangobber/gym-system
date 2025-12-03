@@ -31,6 +31,9 @@ class ShiftsRelationManager extends RelationManager
                 Select::make('activity_id')
                     ->label('Actividad')
                     ->relationship('activity', 'name')
+                    ->default(fn ($livewire) => $livewire?->ownerRecord?->id)
+                    ->disabled()
+                    ->dehydrated(true) // ensure the value is saved even when disabled
                     ->reactive()
                     ->afterStateUpdated(function ($state, callable $set) {
                         $capacity = Activity::find($state)?->capacity;
